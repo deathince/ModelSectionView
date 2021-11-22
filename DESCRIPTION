@@ -1,12 +1,10 @@
 Package: ModelSectionView
-Title: What the Package Does (One Line, Title Case)
+Title: Section view of a 3d model.
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person(given = "Tianxiang", family = "Chu", email = "tpc5284@tamu.edu", role = c("aut", "cre"))
+Description: In 3d modeling, models are defined by the groups of vertices and edges. If the model itself is complicate, a lots of section view is required. To reduce the workload, I will implement a tool that able to calculateand plotting the section view with any provided 2d plane and 3d mode.
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
