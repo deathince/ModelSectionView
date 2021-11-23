@@ -5,10 +5,10 @@
 \title{baseshape generator function
 generating a line, trangle or square}
 \usage{
-baseshape(points = 2)
+baseshape(point = 2)
 }
 \arguments{
-\item{points}{an integer that is either 2, 3, or 4 to determine init number points}
+\item{point}{an integer that is either 2, 3, or 4 to determine init number points}
 }
 \value{
 a line, triangle or square depend on input
