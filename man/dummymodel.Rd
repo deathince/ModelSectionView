@@ -2,16 +2,20 @@
 % Please edit documentation in R/dummymodel.R
 \name{dummymodel}
 \alias{dummymodel}
-\title{Title}
+\title{generate dummy model function
+this function will pull some preset from written model}
 \usage{
 dummymodel(id = 0)
 }
 \arguments{
-\item{id}{}
+\item{id}{the preset id}
 }
 \value{
-
+list$name     the name of id corresponded preset.
+list$points     the points located in this preset.
+list$connections      the connections between points
 }
 \description{
-Title
+generate dummy model function
+this function will pull some preset from written model
 }
