@@ -22,3 +22,9 @@ to generate some model as user's favor. I need to wrap up the unfinished
 functions and maybe transfer some code to C++ for better looping
 Also, I did not write function that generate section view yet. I should 
 have it updated in the later work.
+
+I talked with my geometric modeling's instructor. He points out that the
+best way to store 3d model in my case is to store the surface instead of 
+edges. Otherwise there is no guarantee of correctness of section view. 
+therefore, I need to change way of storing data as vertex and triangle 
+surface that contain 3 vertex at most.
