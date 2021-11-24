@@ -4,14 +4,16 @@
 \alias{baseshapenew}
 \title{the new surface generator function}
 \usage{
-baseshapenew(controlpoints)
+baseshapenew(preset = NULL, controlpoints = NULL)
 }
 \arguments{
-\item{controlpoints}{the n * 3 matrix that lay on the same plane}
+\item{preset}{a scaler that will pull preset model. 1 = square,}
+
+\item{controlpoints}{the 3 * 3 matrix that lay on the same plane}
 }
 \value{
 controlpoints  same as input if no exception exist
-surface        an 1 * 3 matrix or 3 len vector that represent which points create triangle surface.
+surface        an n * 3 matrix  that represent which points create triangle surface.
 }
 \description{
 the new surface generator function

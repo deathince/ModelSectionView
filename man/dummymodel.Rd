@@ -13,7 +13,7 @@ dummymodel(id = 0)
 \value{
 list$name     the name of id corresponded preset.
 list$points     the points located in this preset.
-list$connections      the connections between points
+list$surface      the surface model contained
 }
 \description{
 generate dummy model function

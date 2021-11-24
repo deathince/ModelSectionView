@@ -7,17 +7,22 @@
 #' @return
 #' list$name     the name of id corresponded preset.
 #' list$points     the points located in this preset.
-#' list$connections      the connections between points
+#' list$surface      the surface model contained
 #' @export
 #'
 #' @examples
 dummymodel <- function(id = 0){
   if (id == 0){
     name = "cube"
-    points = matrix(c(1,1,1,1,-1,-1,-1,-1,1,1,-1,-1,1,1,-1,-1,1,-1,1,-1,1,-1,1,-1), nrow = 8, ncol = 3)
-    connections = matrix(c(1,0))
+    lists = baseshapenew(preset = 1)
+    points = shift(lists$points,c(1,0,0))
+    surface = lists$surface
+    lists = baseshapenew(preset = 1)
+    lists = join(points,surface,shift(lists$points,c(-1,0,0)),lists$surface)
+    points = lists$points
+    surface = lists$surface
   }
-  return(list(name = name, points = points, connections = connections))
+  return(list(name = name, points = points, surface = surface))
 }
 
 
@@ -72,23 +77,33 @@ baseshape <- function(point = 2){
 
 #' the new surface generator function
 #'
-#' @param controlpoints the n * 3 matrix that lay on the same plane
+#' @param preset a scaler that will pull preset model. 1 = square,
+#' @param controlpoints the 3 * 3 matrix that lay on the same plane
 #'
 #' @return   controlpoints  same as input if no exception exist
-#'           surface        an 1 * 3 matrix or 3 len vector that represent which points create triangle surface.
+#'           surface        an n * 3 matrix  that represent which points create triangle surface.
 #' @export
 #'
 #' @examples
-baseshapenew <-function(controlpoints){
-  size = length(controlpoints)
-  if (size < 3){
-    stop("the control points can not create a surface")
+baseshapenew <-function(preset = NULL, controlpoints = NULL){
+  if(is.null(preset)){
+    size = length(controlpoints)
+    if (size < 3){
+      stop("the control points can not create a surface")
+    }
+    else if (size > 3){
+      # perform safe check that all control points lay on same surface
+      stop("the control points is more than 3")
+    }
+    surface = matrix(c(1,2,3), nrow = 1)
+    return(list(points = controlpoints, surface = surface))
   }
-  else if (size > 3){
-    # perform safe check that all control points lay on same surface
+  if (preset == 1){
+    # square
+    controlpoints = matrix(c(1,1,0,1,-1,0,-1,1,0,-1,-1,0), byrow = TRUE, nrow = 4)
+    surface = matrix(c(1,2,3,2,3,4),byrow = TRUE, nrow = 2)
+    return(list(points = controlpoints, surface = surface))
   }
-  surface = c(1,2,3)
-  return(list(points = controlpoints, surface = surface))
 }
 
 #' shift function
