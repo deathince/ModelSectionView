@@ -46,34 +46,6 @@ simplifymodel <- function(points, connections){
 
 
 
-#' baseshape generator function
-#' generating a line, trangle or square
-#'
-#' @param point an integer that is either 2, 3, or 4 to determine init number points
-#'
-#' @return a line, triangle or square depend on input
-#' @export
-#'
-#' @examples
-baseshape <- function(point = 2){
-  if (point == 2){
-    name = "line"
-    points = matrix(c(1,-1,0,0,0,0), nrow = 2, ncol = 3)
-    connections = matrix(c(0,1,1,0), nrow = 2, ncol = 2)
-  }
-  else if (point == 3){
-    name = "triangle"
-    points = matrix(c(1,-1,0,0,0,1,0,0,0), nrow = 3, ncol = 3)
-    connections = matrix(c(0,1,1,1,0,1,0,1,1), nrow = 3, ncol = 3)
-  }
-  else{
-    name = "square"
-    points = matrix(c(1,1,-1,-1,1,-1,1,-1,0,0,0,0), nrow = 4, ncol = 3)
-    connections = matrix(c(0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0), nrow = 4, ncol = 4)
-  }
-  return (list(name = name, points = points, connections = connections))
-}
-
 
 #' the new surface generator function
 #'
@@ -100,8 +72,14 @@ baseshapenew <-function(preset = NULL, controlpoints = NULL){
   }
   if (preset == 1){
     # square
-    controlpoints = matrix(c(1,1,0,1,-1,0,-1,1,0,-1,-1,0), byrow = TRUE, nrow = 4)
-    surface = matrix(c(1,2,3,2,3,4),byrow = TRUE, nrow = 2)
+    controlpoints = matrix(c(1,1,0,1,-1,0,-1,1,0,-1,-1,0), byrow = TRUE, ncol = 3)
+    surface = matrix(c(1,2,3,2,3,4),byrow = TRUE, ncol = 3)
+    return(list(points = controlpoints, surface = surface))
+  }
+  if (preset == 2){
+    # triangle
+    controlpoints = matrix(c(1,1,0,1,-1,0,-1,0,0), byrow = TRUE, ncol = 3)
+    surface = matrix(c(1,2,3),byrow = TRUE, ncol = 3)
     return(list(points = controlpoints, surface = surface))
   }
 }
@@ -175,9 +153,6 @@ spin <- function(points, direction = 0, angle = pi / 2){
     points[, 3] = distance * cos(indangle + angle)
     points[, 2] = distance * sin(indangle + angle)
   }
-
-
-
   newpoints = points
 
 
@@ -205,4 +180,24 @@ join <- function(points1, surface1, points2, surface2){
   }
   len = nrow(points1)
   return (list(points = rbind(points1,points2), surface = rbind(surface1,(surface2+len))))
+}
+
+
+#' scalingmodel function
+#'
+#' @param points in control vertex that is generate by other function
+#' @param scalar how much we want to change as scalar, default is 1
+#' @param center the center point scaling to, default is c(0,0,0)
+#'
+#' @return  newpoints  the scaled points
+#' @export
+#'
+#' @examples
+scalingmodel <- function(points, scalar = 1, center = c(0,0,0)){
+  if (length(center) != 3){
+    stop("incorrect center variable")
+  }
+
+  newpoints = t((t(points) - center) * scalar + center)
+  return(newpoints)
 }
