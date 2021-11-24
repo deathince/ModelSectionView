@@ -11,7 +11,7 @@ baseshapenew(controlpoints)
 }
 \value{
 controlpoints  same as input if no exception exist
-surface        an 1 * n matrix or n len vector that represent which points create surface.
+surface        an 1 * 3 matrix or 3 len vector that represent which points create triangle surface.
 }
 \description{
 the new surface generator function

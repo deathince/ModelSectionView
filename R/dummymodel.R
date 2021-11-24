@@ -75,7 +75,7 @@ baseshape <- function(point = 2){
 #' @param controlpoints the n * 3 matrix that lay on the same plane
 #'
 #' @return   controlpoints  same as input if no exception exist
-#'           surface        an 1 * n matrix or n len vector that represent which points create surface.
+#'           surface        an 1 * 3 matrix or 3 len vector that represent which points create triangle surface.
 #' @export
 #'
 #' @examples
@@ -87,7 +87,7 @@ baseshapenew <-function(controlpoints){
   else if (size > 3){
     # perform safe check that all control points lay on same surface
   }
-  surface = rep(1,size)
+  surface = c(1,2,3)
   return(list(points = controlpoints, surface = surface))
 }
 
@@ -167,4 +167,27 @@ spin <- function(points, direction = 0, angle = pi / 2){
 
 
   return(newpoints)
+}
+
+#' join model function
+#'
+#' @param points1 the model1 control points
+#' @param surface1 the model1 surface
+#' @param points2 the model2 control points
+#' @param surface2 the model2 surface
+#'
+#' @return points the combined control points
+#'         surface the combined surface
+#' @export
+#'
+#' @examples
+join <- function(points1, surface1, points2, surface2){
+  if(ncol(points1) != ncol(points2)){
+    stop("the vertex is incorrect")
+  }
+  if (ncol(surface1) != ncol(surface2)){
+    stop("the surface is incorrect")
+  }
+  len = nrow(points1)
+  return (list(points = rbind(points1,points2), surface = rbind(surface1,(surface2+len))))
 }

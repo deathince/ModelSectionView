@@ -3,6 +3,7 @@
 export(baseshape)
 export(baseshapenew)
 export(dummymodel)
+export(join)
 export(shift)
 export(simplifymodel)
 export(spin)
