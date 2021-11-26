@@ -40,7 +40,17 @@ dummymodel <- function(id = 0){
 #' @examples
 simplifymodel <- function(points, connections){
   # this function need to have loop of loop to iterate every pair of points, therefore using C++ is recommended
-  # underconstruction
+  npoint = nrow(points)
+  for (iter in 1:npoint){
+    currow = points[iter,]
+    distance = rowSums((t(t(points[iter+1:npoints, ]) - currow))^2)
+    samepoint = which(distance %in% c(0)) + iter
+    connections [connections %in% samepoints] = iter
+    points = points[-samepoint]
+    if (iter >= nrow(points)){
+      break
+    }
+  }
   return (list(points = points, connections = connections))
 }
 
