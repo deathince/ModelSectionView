@@ -12,7 +12,7 @@ spin(points, direction = 0, angle = pi/2)
 
 \item{direction}{an integer that is either 0, 1, 2 corresponding xy, xz, yz plane we perform rotate}
 
-\item{angle}{how much we rotate the graph in radian, default is half pi radian or 90 degree}
+\item{angle}{how much we rotate the graph in radiant, default is half pi radiant or 90 degree}
 }
 \value{
 newpoints   the P * 3 matrix of points after the rotation is performed.
