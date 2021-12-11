@@ -21,6 +21,16 @@ dummymodel <- function(id = 0){
     lists = join(points,surface,shift(lists$points,c(0,0,-1)),lists$surface)
     points = lists$points
     surface = lists$surface
+    lists = baseshapenew(preset = 1)
+    temp = spin(lists$points, 1)
+    lists = join(points,surface,shift(temp,c(1,0,0)),lists$surface)
+    points = lists$points
+    surface = lists$surface
+    lists = baseshapenew(preset = 1)
+    temp = spin(lists$points, 1)
+    lists = join(points,surface,shift(temp,c(-1,0,0)),lists$surface)
+    points = lists$points
+    surface = lists$surface
 
   }
   return(list(name = name, points = points, surface = surface))
@@ -42,6 +52,7 @@ dummymodel <- function(id = 0){
 simplifymodel <- function(points, surface){
   # this function need to have loop of loop to iterate every pair of points, therefore using C++ is recommended
   npoint = nrow(points)
+  removes = c()
   for (iter in 1:(npoint - 1)){
     # get current number
     currow = points[iter,]
@@ -56,15 +67,12 @@ simplifymodel <- function(points, surface){
     surface [surface %in% samepoint] = iter
 
     # remove duplicated points
-    if (length(samepoint) != 0){
-
-      points = points[-samepoint,]
-    }
+    removes = append(removes,samepoint)
 
     # since we shrink the points matrix, we need to check the length every time
-    if (iter >= nrow(points) - 1){
-      return (list(points = points, surface = surface))
-    }
+  }
+  if ( length(removes) != 0){
+    points = points[-removes,]
   }
   return (list(points = points, surface = surface))
 }
@@ -161,23 +169,34 @@ spin <- function(points, direction = 0, angle = pi / 2){
   if (direction == 0){
     # xy plane
     distance = sqrt(points[, 1]^2 + points[, 2]^2)
-    indangle = tan(points[, 2] / points[, 1])
+
+    signs = sign(points[, 2])
+    indangle = atan(points[, 2] / (points[, 1]))
+    signs[which (signs >= 0)] = 0
     newpoints[, 1] = distance * cos(indangle + angle)
     newpoints[, 2] = distance * sin(indangle + angle)
   }
   else if (direction == 1){
     # xz plane
     distance = sqrt(points[, 1]^2 + points[, 3]^2)
-    indangle = tan(points[, 3] / points[, 1])
+
+    signs = sign(points[, 1])
+    indangle = atan(points[, 3] / (points[, 1]))
+    signs[which (signs >= 0)] = 0
+    indangle = indangle + pi * (signs)
+    #((-1 * (indangle + angle) %/% pi + 0.5) * 2) * signs *
     newpoints[, 1] = distance * cos(indangle + angle)
     newpoints[, 3] = distance * sin(indangle + angle)
   }
   else if (direction == 2){
     # yz plane
     distance = sqrt(points[, 3]^2 + points[, 2]^2)
-    indangle = tan(points[, 2] / points[, 3])
-    newpoints[, 3] = distance * cos(indangle + angle)
-    newpoints[, 2] = distance * sin(indangle + angle)
+
+    signs = sign(points[, 2])
+    indangle = atan(points[, 2] / points[, 3])
+    signs[which (signs >= 0)] = 0
+    newpoints[, 3] = signs * distance * cos(indangle + angle)
+    newpoints[, 2] = signs * distance * sin(indangle + angle)
   }
 
 
