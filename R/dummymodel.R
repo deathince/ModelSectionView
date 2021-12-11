@@ -169,17 +169,16 @@ spin <- function(points, direction = 0, angle = pi / 2){
   if (direction == 0){
     # xy plane
     distance = sqrt(points[, 1]^2 + points[, 2]^2)
-
     signs = sign(points[, 2])
     indangle = atan(points[, 2] / (points[, 1]))
     signs[which (signs >= 0)] = 0
+    indangle = indangle + pi * (signs)
     newpoints[, 1] = distance * cos(indangle + angle)
     newpoints[, 2] = distance * sin(indangle + angle)
   }
   else if (direction == 1){
     # xz plane
     distance = sqrt(points[, 1]^2 + points[, 3]^2)
-
     signs = sign(points[, 1])
     indangle = atan(points[, 3] / (points[, 1]))
     signs[which (signs >= 0)] = 0
@@ -195,8 +194,9 @@ spin <- function(points, direction = 0, angle = pi / 2){
     signs = sign(points[, 2])
     indangle = atan(points[, 2] / points[, 3])
     signs[which (signs >= 0)] = 0
-    newpoints[, 3] = signs * distance * cos(indangle + angle)
-    newpoints[, 2] = signs * distance * sin(indangle + angle)
+    indangle = indangle + pi * (signs)
+    newpoints[, 3] = distance * cos(indangle + angle)
+    newpoints[, 2] = distance * sin(indangle + angle)
   }
 
 
