@@ -31,10 +31,194 @@ dummymodel <- function(id = 0){
     lists = join(points,surface,shift(temp,c(-1,0,0)),lists$surface)
     points = lists$points
     surface = lists$surface
+    lists = baseshapenew(preset = 1)
+    temp = spin(lists$points, 2)
+    lists = join(points,surface,shift(temp,c(0,-1,0)),lists$surface)
+    points = lists$points
+    surface = lists$surface
+    lists = baseshapenew(preset = 1)
+    temp = spin(lists$points, 2)
+    lists = join(points,surface,shift(temp,c(0,1,0)),lists$surface)
+    points = lists$points
+    surface = lists$surface
 
   }
   return(list(name = name, points = points, surface = surface))
 }
+
+#' Title
+#'
+#' @inherit simplifymodel
+#' @param plane the plane constant variable x y z store as c(x,y,z) that we want to cut though the model. default is c(0,0,1) or xy plane
+#' @param k  the scaler function that make the plane shift. equations is x + y + z = k default k = 0
+#'
+#' @return  the function do not return anything but draw a graph
+#' @export
+#'
+#' @examples
+sectionview <- function(points, surface, plane = c(0,0,1), k = 0){
+  surfacecount = nrow(surface)
+  draw = matrix(ncol = 6)
+  for (iter in 1:surfacecount){
+    cursurface = surface[iter, ]
+    pointmat = points[cursurface, ]
+    side = sign(rowSums(t(t(pointmat) * plane)) - k)
+    if (abs(sum(side)) < 2){
+      if (side[1] == 0 ){
+        if (side[2] == 0){
+          draw = rbind(draw, append(pointmat[1,], pointmat[2,]))
+        }
+        else{
+          const = sum(pointmat[2,] * plane - k)
+          t = sum((pointmat[3,] - pointmat[2,]) * plane)
+          anss = -const / t
+          interpoint = pointmat[2, ] + anss * (pointmat[3,] - pointmat[2,])
+          draw = rbind(draw, append(pointmat[1,], interpoint))
+        }
+      }
+      else if(side[1] == 1 ){
+        if (side[2] == 0){
+          if (side[3] == 0){
+            draw = rbind(draw, append(pointmat[2,], pointmat[3,]))
+          }
+          else{
+            const = sum(pointmat[1,] * plane - k)
+            t = sum((pointmat[3,] - pointmat[1,]) * plane)
+            anss = -const / t
+            interpoint = pointmat[1, ] + anss * (pointmat[3,] - pointmat[1,])
+            draw = rbind(draw, append(pointmat[2,], interpoint))
+          }
+        }
+        else if (side[2] == 1){
+          const = sum(pointmat[3,] * plane - k)
+          t = sum((pointmat[1,] - pointmat[3,]) * plane)
+          anss = -const / t
+          interpoint = pointmat[3, ] + anss * (pointmat[1,] - pointmat[3,])
+          const2 = sum(pointmat[2,] * plane - k)
+          t2 = sum((pointmat[3,] - pointmat[2,]) * plane)
+          anss2 = -const / t
+          interpoint2 = pointmat[2, ] + anss * (pointmat[3,] - pointmat[2,])
+          draw = rbind(draw, append(interpoint, interpoint2))
+        }
+        else{
+          const = sum(pointmat[2,] * plane - k)
+          t = sum((pointmat[1,] - pointmat[2,]) * plane)
+          anss = -const / t
+          interpoint = pointmat[2, ] + anss * (pointmat[1,] - pointmat[2,])
+
+          if (side[3] == 0){
+            draw = rbind(draw,append(interpoint, pointmat[3, ]))
+          }
+          else if (side[3] == 1){
+            const2 = sum(pointmat[2,] * plane - k)
+            t2 = sum((pointmat[3,] - pointmat[2,]) * plane)
+            anss2 = -const / t
+            interpoint2 = pointmat[2, ] + anss * (pointmat[3,] - pointmat[2,])
+            draw = rbind(draw, append(interpoint2, interpoint))
+
+          }
+          else{
+            const2 = sum(pointmat[3,] * plane - k)
+            t2 = sum((pointmat[1,] - pointmat[3,]) * plane)
+            anss2 = -const / t
+            interpoint2 = pointmat[3, ] + anss * (pointmat[1,] - pointmat[3,])
+            draw = rbind(draw, append(interpoint2, interpoint))
+
+          }
+        }
+      }
+      else{
+        if (side[2] == 0){
+          if (side[3] == 0){
+            draw = rbind(draw, append(pointmat[2,], pointmat[3,]))
+          }
+          else{
+            const = sum(pointmat[1,] * plane - k)
+            t = sum((pointmat[3,] - pointmat[1,]) * plane)
+            anss = -const / t
+            interpoint = pointmat[1, ] + anss * (pointmat[3,] - pointmat[1,])
+            draw = rbind(draw, append(pointmat[2,], interpoint))
+          }
+        }
+        else if (side[2] == -1){
+          const = sum(pointmat[3,] * plane - k)
+          t = sum((pointmat[1,] - pointmat[3,]) * plane)
+          anss = -const / t
+          interpoint = pointmat[3, ] + anss * (pointmat[1,] - pointmat[3,])
+          const2 = sum(pointmat[2,] * plane - k)
+          t2 = sum((pointmat[3,] - pointmat[2,]) * plane)
+          anss2 = -const / t
+          interpoint2 = pointmat[2, ] + anss * (pointmat[3,] - pointmat[2,])
+          draw = rbind(draw, append(interpoint, interpoint2))
+        }
+        else{
+          const = sum(pointmat[2,] * plane - k)
+          t = sum((pointmat[1,] - pointmat[2,]) * plane)
+          anss = -const / t
+          interpoint = pointmat[2, ] + anss * (pointmat[1,] - pointmat[2,])
+
+          if (side[3] == 0){
+            draw = rbind(draw,append(interpoint, pointmat[3, ]))
+          }
+          else if (side[3] == -1){
+            const2 = sum(pointmat[2,] * plane - k)
+            t2 = sum((pointmat[3,] - pointmat[2,]) * plane)
+            anss2 = -const / t
+            interpoint2 = pointmat[2, ] + anss * (pointmat[3,] - pointmat[2,])
+            draw = rbind(draw, append(interpoint2, interpoint))
+
+          }
+          else{
+            const2 = sum(pointmat[3,] * plane - k)
+            t2 = sum((pointmat[1,] - pointmat[3,]) * plane)
+            anss2 = -const / t
+            interpoint2 = pointmat[3, ] + anss * (pointmat[1,] - pointmat[3,])
+            draw = rbind(draw, append(interpoint2, interpoint))
+
+          }
+        }
+      }
+    }
+  }
+  draw = draw[-1, ]
+  if (which.max(plane) == 1){
+    temp = draw[,c(2,3,5,6)]
+    minx = min(temp[,c(1,3)])
+    maxx = max(temp[,c(1,3)])
+    miny = min(temp[,c(2,4)])
+    maxy = max(temp[,c(2,4)])
+    plot(temp[1,c(1,3)],temp[1,c(2,4)],"b",xlim = c(minx,maxx), ylim = c(miny,maxy))
+    for (iter in 2:nrow(temp)){
+      lines(temp[iter,c(1,3)],temp[iter,c(2,4)])
+    }
+  }
+  else if (which.max(plane) == 2){
+    temp = draw[,c(1,3,4,6)]
+    minx = min(temp[,c(1,3)])
+    maxx = max(temp[,c(1,3)])
+    miny = min(temp[,c(2,4)])
+    maxy = max(temp[,c(2,4)])
+    plot(temp[1,c(1,3)],temp[1,c(2,4)],"b",xlim = c(minx,maxx), ylim = c(miny,maxy))
+    for (iter in 2:nrow(temp)){
+      lines(temp[iter,c(1,3)],temp[iter,c(2,4)])
+    }
+  }
+  else if (which.max(plane) == 3){
+    temp = draw[,c(1,2,4,5)]
+    minx = min(temp[,c(1,3)])
+    maxx = max(temp[,c(1,3)])
+    miny = min(temp[,c(2,4)])
+    maxy = max(temp[,c(2,4)])
+    plot(temp[1,c(1,3)],temp[1,c(2,4)],"b",xlim = c(minx,maxx), ylim = c(miny,maxy))
+    for (iter in 2:nrow(temp)){
+      lines(temp[iter,c(1,3)],temp[iter,c(2,4)])
+    }
+  }
+  return(draw)
+}
+
+
+
 
 
 #' simplify model function
@@ -169,7 +353,7 @@ spin <- function(points, direction = 0, angle = pi / 2){
   if (direction == 0){
     # xy plane
     distance = sqrt(points[, 1]^2 + points[, 2]^2)
-    signs = sign(points[, 2])
+    signs = sign(points[, 1])
     indangle = atan(points[, 2] / (points[, 1]))
     signs[which (signs >= 0)] = 0
     indangle = indangle + pi * (signs)
@@ -191,7 +375,7 @@ spin <- function(points, direction = 0, angle = pi / 2){
     # yz plane
     distance = sqrt(points[, 3]^2 + points[, 2]^2)
 
-    signs = sign(points[, 2])
+    signs = sign(points[, 3])
     indangle = atan(points[, 2] / points[, 3])
     signs[which (signs >= 0)] = 0
     indangle = indangle + pi * (signs)
