@@ -41,7 +41,18 @@ dummymodel <- function(id = 0){
     lists = join(points,surface,shift(temp,c(0,1,0)),lists$surface)
     points = lists$points
     surface = lists$surface
-
+    final = simplifymodel(points,surface)
+    points = final$points
+    surface = final$surface
+  }
+  else{
+    boxbig = dummymodel()
+    boxsmall = dummymodel()
+    smallpoints = scalingmodel(boxsmall$points,c(0.5,0.5,0.5))
+    lists = join(boxbig$points,boxbig$surface,smallpoints,boxsmall$surface)
+    name = "box in a box"
+    points = lists$points
+    surface = lists$surface
   }
   return(list(name = name, points = points, surface = surface))
 }
@@ -191,7 +202,7 @@ sectionview <- function(points, surface, plane = c(0,0,1), k = 0){
     maxx = max(temp[,c(1,3)])
     miny = min(temp[,c(2,4)])
     maxy = max(temp[,c(2,4)])
-    plot(temp[1,c(1,3)],temp[1,c(2,4)],"b",xlim = c(minx,maxx), ylim = c(miny,maxy))
+    plot(temp[1,c(1,3)],temp[1,c(2,4)],"l",xlim = c(minx,maxx), ylim = c(miny,maxy))
     for (iter in 2:nrow(temp)){
       lines(temp[iter,c(1,3)],temp[iter,c(2,4)])
     }
@@ -202,7 +213,7 @@ sectionview <- function(points, surface, plane = c(0,0,1), k = 0){
     maxx = max(temp[,c(1,3)])
     miny = min(temp[,c(2,4)])
     maxy = max(temp[,c(2,4)])
-    plot(temp[1,c(1,3)],temp[1,c(2,4)],"b",xlim = c(minx,maxx), ylim = c(miny,maxy))
+    plot(temp[1,c(1,3)],temp[1,c(2,4)],"l",xlim = c(minx,maxx), ylim = c(miny,maxy))
     for (iter in 2:nrow(temp)){
       lines(temp[iter,c(1,3)],temp[iter,c(2,4)])
     }
@@ -213,7 +224,7 @@ sectionview <- function(points, surface, plane = c(0,0,1), k = 0){
     maxx = max(temp[,c(1,3)])
     miny = min(temp[,c(2,4)])
     maxy = max(temp[,c(2,4)])
-    plot(temp[1,c(1,3)],temp[1,c(2,4)],"b",xlim = c(minx,maxx), ylim = c(miny,maxy))
+    plot(temp[1,c(1,3)],temp[1,c(2,4)],"l",xlim = c(minx,maxx), ylim = c(miny,maxy))
     for (iter in 2:nrow(temp)){
       lines(temp[iter,c(1,3)],temp[iter,c(2,4)])
     }
@@ -271,7 +282,7 @@ simplifymodel <- function(points, surface){
 #' the new surface generator function
 #'
 #' @param preset a scaler that will pull preset model. 1 = square,
-#' @param controlpoints the 3 * 3 matrix that present 3 points location
+#' @param controlpoints the 3 * 3 matrix that each row present 3 points location
 #'
 #' @return   controlpoints  same as input if no exception exist, or a group of preset points with matrix size n * 3
 #'           surface        an n * 3 matrix  that represent which points create triangle surface.
@@ -418,14 +429,14 @@ join <- function(points1, surface1, points2, surface2){
 #' scalingmodel function
 #'
 #' @param points in control vertex that is generate by other function
-#' @param scalar how much we want to change as scalar, default is 1
+#' @param scalar how much we want to change as scalar in each direction, default is c(1,1,1)
 #' @param center the center point scaling to, default is c(0,0,0)
 #'
 #' @return  newpoints  the scaled points
 #' @export
 #'
 #' @examples
-scalingmodel <- function(points, scalar = 1, center = c(0,0,0)){
+scalingmodel <- function(points, scalar = c(1,1,1), center = c(0,0,0)){
   if (length(center) != 3){
     stop("incorrect center variable")
   }

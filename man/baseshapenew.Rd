@@ -9,7 +9,7 @@ baseshapenew(preset = NULL, controlpoints = NULL)
 \arguments{
 \item{preset}{a scaler that will pull preset model. 1 = square,}
 
-\item{controlpoints}{the 3 * 3 matrix that present 3 points location}
+\item{controlpoints}{the 3 * 3 matrix that each row present 3 points location}
 }
 \value{
 controlpoints  same as input if no exception exist, or a group of preset points with matrix size n * 3

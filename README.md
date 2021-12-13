@@ -13,18 +13,19 @@ Also, package can generate a graph of models' section view in given plane.
 the project will be posted on github, using devtools to install from github
 using following line
 
-devtools::install_github("deathince/ModelSectionView")
+devtools::install_github("deathince/ModelSectionView",build_vignettes = TRUE)
 
-# the on going work
+# GEtting start
 
-I have create most the functions' skeletons. Many of them are designed
-to generate some model as user's favor. I need to wrap up the unfinished 
-functions and maybe transfer some code to C++ for better looping
-Also, I did not write function that generate section view yet. I should 
-have it updated in the later work.
+If there is a model ready to use. That is a V * 3 matrix indicating the location of each vertex
+and S * 3 matrix indicate every triangle surface that is created by corresponding 3 vertices --
+in one row, row with (1,2,3) indicates the surface constructed by 1,2,3rd vertex in vertex matrix.
+simply call sectionview(vertexmatrix, surfacematrix, plane = c(0,0,1), k = 0) which will return an
+xy plane section view. the default plane equation is 0x + 0y + 1z = k = 0.  its highly recommended to cut
+along axis direction.
 
-I talked with my geometric modeling's instructor. He points out that the
-best way to store 3d model in my case is to store the surface instead of 
-edges. Otherwise there is no guarantee of correctness of section view. 
-therefore, I need to change way of storing data as vertex and triangle 
-surface that contain 3 vertex at most.
+if there is no model ready, it is good to start by calling dummymodel, there are preset such as a cube in the dummymodel.
+simply call the function and return corresponding vertex point and surface.
+
+there package also provide tools from drawing model from 0.creating new triangles with bashshapenew function and
+using spin, scale, join, shift to modify new model.

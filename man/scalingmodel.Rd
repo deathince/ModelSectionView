@@ -4,12 +4,12 @@
 \alias{scalingmodel}
 \title{scalingmodel function}
 \usage{
-scalingmodel(points, scalar = 1, center = c(0, 0, 0))
+scalingmodel(points, scalar = c(1, 1, 1), center = c(0, 0, 0))
 }
 \arguments{
 \item{points}{in control vertex that is generate by other function}
 
-\item{scalar}{how much we want to change as scalar, default is 1}
+\item{scalar}{how much we want to change as scalar in each direction, default is c(1,1,1)}
 
 \item{center}{the center point scaling to, default is c(0,0,0)}
 }
