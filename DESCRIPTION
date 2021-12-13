@@ -1,6 +1,6 @@
 Package: ModelSectionView
 Title: Section view of a 3d model.
-Version: 0.0.0.9000
+Version: 1.0.0.0000
 Authors@R: 
     person(given = "Tianxiang", family = "Chu", email = "tpc5284@tamu.edu", role = c("aut", "cre"))
 Description: In 3d modeling, models are defined by the groups of vertices and edges. If the model itself is complicate, a lots of section view is required. To reduce the workload, I will implement a tool that able to calculateand plotting the section view with any provided 2d plane and 3d mode.
