@@ -1,0 +1,22 @@
+---
+title: "A Guide Though the work"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{A Guide Though the work}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(ModelSectionView)
+```
+
+## Introduction
+this document is created in order to help understanding the functions in testpackage.

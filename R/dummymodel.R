@@ -181,6 +181,10 @@ sectionview <- function(points, surface, plane = c(0,0,1), k = 0){
     }
   }
   draw = draw[-1, ]
+  if (nrow(draw)==0){
+    print("the plane did not cut though the plane")
+    return(draw)
+  }
   if (which.max(plane) == 1){
     temp = draw[,c(2,3,5,6)]
     minx = min(temp[,c(1,3)])
