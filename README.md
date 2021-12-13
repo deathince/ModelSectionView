@@ -29,3 +29,12 @@ simply call the function and return corresponding vertex point and surface.
 
 there package also provide tools from drawing model from 0.creating new triangles with bashshapenew function and
 using spin, scale, join, shift to modify new model.
+
+for more details, there is a introduction.RMD in vignette which will guide though a detailed function ability and a sample output.
+
+### knowing issue
+my project failed to load on my computer because mine did not set TAR as internal I have to run line
+
+Sys.setenv("TAR" = "internal")
+
+before I install package in order to make everything work.
